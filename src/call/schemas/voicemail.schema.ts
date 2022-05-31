@@ -12,13 +12,13 @@ export class VoiceMail {
   caller: string;
 
   @Prop()
-  callerCountry:string
+  callerCountry: string;
 
   @Prop()
-  callTo:string
+  callTo: string;
 
   @Prop()
-  recordingDuration:string
+  recordingDuration: string;
 
   @Prop()
   recordingUrl: string;

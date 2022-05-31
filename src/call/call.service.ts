@@ -12,49 +12,48 @@ export class CallService {
   constructor(
     //remove private from here
     @InjectModel('Call') readonly callModel: Model<CallInterface>,
-    @InjectModel('VoiceMail') readonly VoiceMailModel: Model<VoiceMailInterface>,  // interface here or call document
+    @InjectModel('VoiceMail')
+    readonly VoiceMailModel: Model<VoiceMailInterface>, // interface here or call document
   ) {}
 
-  check(){
-    console.log('in found call service')
+  check() {
+    console.log('in found call service');
   }
 
-  async logTransferCall(createCallDto:CreateCallDto):Promise<CallDocument>{
-    const {callStatus,caller,callerCountry,callTo} = createCallDto;
+  async logTransferCall(createCallDto: CreateCallDto): Promise<CallDocument> {
+    const { callStatus, caller, callerCountry, callTo } = createCallDto;
     const newCall = new this.callModel({
       caller: caller,
-      callerCountry:callerCountry,
-      callStatus:callStatus,
-      callTo:callTo,
-     // voiceMailLink:voiceMailLink,
-
+      callerCountry: callerCountry,
+      callStatus: callStatus,
+      callTo: callTo,
+      // voiceMailLink:voiceMailLink,
     });
     await newCall.save();
     console.log(newCall);
     return newCall;
   }
-  async logVoiceMail(createVoiceMailDto:CreateVoiceMailDto):Promise<VoiceMailDocument>{
-    const {caller,callerCountry,callTo, recordingDuration, recordingUrl} = createVoiceMailDto;
+  async logVoiceMail(
+    createVoiceMailDto: CreateVoiceMailDto,
+  ): Promise<VoiceMailDocument> {
+    const { caller, callerCountry, callTo, recordingDuration, recordingUrl } =
+      createVoiceMailDto;
     const newVoiceMail = new this.VoiceMailModel({
       caller: caller,
-      callerCountry:callerCountry,
-      callTo:callTo,
-      recordingDuration:recordingDuration,
-      recordingUrl:recordingUrl,
-
+      callerCountry: callerCountry,
+      callTo: callTo,
+      recordingDuration: recordingDuration,
+      recordingUrl: recordingUrl,
     });
     await newVoiceMail.save();
     console.log(newVoiceMail);
     return newVoiceMail;
   }
 
-  async getActivityFeed():Promise<any>{
-    const allCalls = await this.callModel.find()
-    const allVoiceMails =await this.VoiceMailModel.find()
+  async getActivityFeed(): Promise<any> {
+    const allCalls = await this.callModel.find();
+    const allVoiceMails = await this.VoiceMailModel.find();
 
-  return {allCalls:allCalls,allVoiceMails:allVoiceMails}
-
-
+    return { allCalls: allCalls, allVoiceMails: allVoiceMails };
   }
-
 }

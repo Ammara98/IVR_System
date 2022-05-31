@@ -9,10 +9,8 @@ import { twiml } from 'twilio';
 export class IvrService {
   public constructor(
     @InjectTwilio() private readonly client: TwilioClient,
-    readonly callService:CallService,
-    //readonly vr =new twiml.VoiceResponse();
-  ) 
-  {}
+    readonly callService: CallService, //readonly vr =new twiml.VoiceResponse();
+  ) {}
 
   combinedCall() {
     const vr = new twiml.VoiceResponse();
@@ -35,18 +33,18 @@ export class IvrService {
     console.log('in transfer callbak');
     console.log(details);
     const vr = new twiml.VoiceResponse();
-    try {  
+    try {
       vr.hangup();
-      const createCallDto:CreateCallDto = {
+      const createCallDto: CreateCallDto = {
         caller: details.Caller,
-        callerCountry:details.CallerCountry,
-        callStatus:details.DialCallStatus,
+        callerCountry: details.CallerCountry,
+        callStatus: details.DialCallStatus,
         callTo: details.Called,
         //voiceMailLink:null
-      }
+      };
       this.callService.logTransferCall(createCallDto);
       return vr.toString();
-     // return details;
+      // return details;
     } catch (e) {
       return e;
     }
@@ -56,17 +54,16 @@ export class IvrService {
     console.log(details);
     const vr = new twiml.VoiceResponse();
     try {
-      
       //new added line
       vr.say('Thankyou for contacting us');
       vr.hangup();
-      const createVoiceMailDto:CreateVoiceMailDto = {
+      const createVoiceMailDto: CreateVoiceMailDto = {
         caller: details.Caller,
-        callerCountry:details.CallerCountry,
+        callerCountry: details.CallerCountry,
         callTo: details.Called,
-        recordingDuration:details.RecordingDuration,
-        recordingUrl:details.RecordingUrl,
-      }
+        recordingDuration: details.RecordingDuration,
+        recordingUrl: details.RecordingUrl,
+      };
       this.callService.logVoiceMail(createVoiceMailDto);
       return vr.toString();
       //return details;
@@ -106,12 +103,11 @@ export class IvrService {
     }
   }
 
-
   async gather(digits: any) {
     try {
-      const vr = new twiml.VoiceResponse;
+      const vr = new twiml.VoiceResponse();
       console.log(digits);
-      let res:any;
+      let res: any;
       //let res = vr.toString();
       // If the user entered digits, process their request
       if (digits) {
@@ -131,7 +127,7 @@ export class IvrService {
             res = await this.recordVoicemail();
             break;
           default:
-            vr.say("Sorry, I do not understand that choice.");
+            vr.say('Sorry, I do not understand that choice.');
             vr.pause();
             vr.redirect('/ivr/voice');
             break;

@@ -5,19 +5,16 @@ export type CallDocument = Call & mongoose.Document;
 
 @Schema({ timestamps: true })
 export class Call {
-
-
   @Prop()
   caller: string;
 
   @Prop()
-  callerCountry:string
+  callerCountry: string;
 
   @Prop()
-  callStatus: string; 
+  callStatus: string;
 
   @Prop()
-  callTo:string
-
+  callTo: string;
 }
 export const CallSchema = SchemaFactory.createForClass(Call);

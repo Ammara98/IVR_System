@@ -1,22 +1,18 @@
-import { IsNotEmpty, IsIn, IsOptional } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateVoiceMailDto {
-
   @IsNotEmpty()
   caller: string;
 
   @IsNotEmpty()
-  callerCountry:string
-
+  callerCountry: string;
 
   @IsNotEmpty()
-  recordingDuration:string
+  recordingDuration: string;
 
   @IsNotEmpty()
   recordingUrl: string;
 
   @IsNotEmpty()
-  callTo:string;  
-
- 
+  callTo: string;
 }

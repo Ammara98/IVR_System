@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Header, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Header, Post } from '@nestjs/common';
 import { IvrService } from './ivr.service';
 
 @Controller('ivr')
 export class IvrController {
-  constructor(private ivrService: IvrService) // private callService:CallService
-  {}
+  constructor(
+    private ivrService: IvrService, // private callService:CallService
+  ) {}
 
   @Post('/record/hangup')
   @Header('content-type', 'text/xml')

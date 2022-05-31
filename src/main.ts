@@ -1,6 +1,6 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-require('dotenv').config({ path: '.env' })
+require('dotenv').config({ path: '.env' });
 import { AppModule } from './app.module';
 
 async function bootstrap() {

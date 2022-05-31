@@ -6,11 +6,11 @@ export type UserDocument = User & mongoose.Document;
 @Schema({ timestamps: true })
 export class User {
   @Prop({ unique: true })
-  username: string; 
+  username: string;
 
   @Prop()
   password: string;
-  
+
   @Prop()
   salt: string;
 }

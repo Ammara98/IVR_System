@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TwilioModule } from 'nestjs-twilio';
 import { CallModule } from './call/call.module';
 import { IvrModule } from './ivr/ivr.module';
 import { AuthModule } from './auth/auth.module';
-
 
 // use
 //console.log(process.env.AUTH_TOKEN) // localhost
@@ -35,7 +34,7 @@ import { AuthModule } from './auth/auth.module';
     // inject: [ConfigService],
 
     //  } ),
-    
+
     ///////////// ------------------- NOTE --------------------///////////////////
 
     // I know I have to use environment file here, however, I can not figure out how to use configModule in app folder
@@ -52,4 +51,4 @@ import { AuthModule } from './auth/auth.module';
   ],
 })
 export class AppModule {}
-console.log(process.env.AUTH_TOKEN)
+console.log(process.env.AUTH_TOKEN);

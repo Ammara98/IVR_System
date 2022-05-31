@@ -6,10 +6,14 @@ import { CallSchema } from './schemas/call.schema';
 import { VoiceMailSchema } from './schemas/voicemail.schema';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: 'Call', schema: CallSchema },
-  { name: 'VoiceMail', schema: VoiceMailSchema}])],
+  imports: [
+    MongooseModule.forFeature([
+      { name: 'Call', schema: CallSchema },
+      { name: 'VoiceMail', schema: VoiceMailSchema },
+    ]),
+  ],
   controllers: [CallController],
   providers: [CallService],
-  exports:[CallService],
+  exports: [CallService],
 })
 export class CallModule {}

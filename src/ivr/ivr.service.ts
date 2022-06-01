@@ -89,7 +89,6 @@ export class IvrService {
           method: 'POST',
         },
         this.configService.get('COMPANY_NUMBER')
-       // '+923360575674',
       );
       return vr.toString();
     } catch (e) {

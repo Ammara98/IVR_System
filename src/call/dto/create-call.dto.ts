@@ -12,7 +12,4 @@ export class CreateCallDto {
 
   @IsNotEmpty()
   callTo: string;
-
-  // @IsOptional()
-  // voiceMailLink: string;
 }

@@ -3,10 +3,11 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CallInterface } from './interfaces/call.interface';
 import { CreateCallDto } from './dto/create-call.dto';
-import { CallDocument } from './schemas/call.schema';
+
 import { VoiceMailInterface } from './interfaces/voicemail.interface';
 import { CreateVoiceMailDto } from './dto/create-voicemail.dto';
-import { VoiceMailDocument } from './schemas/voicemail.schema';
+
+import ResponseHandler from '../common/response-handler'
 @Injectable()
 export class CallService {
   constructor(
@@ -16,26 +17,21 @@ export class CallService {
     readonly VoiceMailModel: Model<VoiceMailInterface>, // interface here or call document
   ) {}
 
-  check() {
-    console.log('in found call service');
-  }
 
-  async logTransferCall(createCallDto: CreateCallDto): Promise<CallDocument> {
+  async logTransferCall(createCallDto: CreateCallDto): Promise<any> {
     const { callStatus, caller, callerCountry, callTo } = createCallDto;
     const newCall = new this.callModel({
       caller: caller,
       callerCountry: callerCountry,
       callStatus: callStatus,
       callTo: callTo,
-      // voiceMailLink:voiceMailLink,
     });
-    await newCall.save();
-    console.log(newCall);
-    return newCall;
+    const savedCall = await newCall.save();
+    return ResponseHandler.success(savedCall);
   }
   async logVoiceMail(
     createVoiceMailDto: CreateVoiceMailDto,
-  ): Promise<VoiceMailDocument> {
+  ): Promise<any> {
     const { caller, callerCountry, callTo, recordingDuration, recordingUrl } =
       createVoiceMailDto;
     const newVoiceMail = new this.VoiceMailModel({
@@ -45,15 +41,15 @@ export class CallService {
       recordingDuration: recordingDuration,
       recordingUrl: recordingUrl,
     });
-    await newVoiceMail.save();
-    console.log(newVoiceMail);
-    return newVoiceMail;
+   const savedVoiceMail =  await newVoiceMail.save();
+   return ResponseHandler.success(savedVoiceMail);
+   
   }
 
   async getActivityFeed(): Promise<any> {
     const allCalls = await this.callModel.find();
     const allVoiceMails = await this.VoiceMailModel.find();
-
-    return { allCalls: allCalls, allVoiceMails: allVoiceMails };
+    const activity = { allCalls: allCalls, allVoiceMails: allVoiceMails }
+    return ResponseHandler.success(activity)
   }
 }

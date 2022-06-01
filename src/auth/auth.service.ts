@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { SignUpDto } from './dto/signup.dto';
 import { LogInDto } from './dto/login.dto';
@@ -7,6 +7,7 @@ import { Model } from 'mongoose';
 import { UserInterface } from './interfaces/user.interface';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
+import ResponseHandler from 'src/common/response-handler';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +19,7 @@ export class AuthService {
     return await bcrypt.hash(password, salt);
   }
 
-  async signUp(signUpDto: SignUpDto): Promise<string> {
+  async signUp(signUpDto: SignUpDto): Promise<any> {
     const { username, password } = signUpDto;
 
     const salt = await bcrypt.genSalt();
@@ -31,16 +32,10 @@ export class AuthService {
     });
     try {
       await newUser.save();
-
-      return `${username} has been created!`;
+        return ResponseHandler.success(username);
     } catch (e) {
-      throw new HttpException(
-        {
-          status: HttpStatus.BAD_REQUEST,
-          error: 'Username already exists',
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+
+    return ResponseHandler.fail('Username already exists', HttpStatus.BAD_REQUEST)
     }
   }
 
@@ -62,7 +57,7 @@ export class AuthService {
 
   async validateUserCredentials(
     logInDto: LogInDto,
-  ): Promise<{ accessToken: string }> {
+  ): Promise<any> {
     const { username, password } = logInDto;
     const user = await this.userModel.findOne({ username: username });
     try {
@@ -72,15 +67,10 @@ export class AuthService {
       ) {
         const payload: JwtPayload = { username };
         const accessToken = await this.createJwtAccessToken(payload);
-        return accessToken;
+        return ResponseHandler.success(accessToken);
+       // return accessToken;
       }
-      throw new HttpException(
-        {
-          status: HttpStatus.NOT_FOUND,
-          error: 'Invalid username or password',
-        },
-        HttpStatus.NOT_FOUND,
-      );
+      return ResponseHandler.fail('Invalid username or password',HttpStatus.NOT_FOUND)
     } catch (e) {
       return e;
     }

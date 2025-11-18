@@ -1,73 +1,189 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# IVR System (NestJS + Twilio)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This project implements an Interactive Voice Response (IVR) system using **NestJS** and **Twilio**.  
+It includes user authentication, call handling, voicemail processing, and a modular IVR flow.  
+The codebase follows a clean architecture with separated modules, DTOs, interfaces, and schemas.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## Features
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- IVR call flow handling using Twilio Webhooks
+- User authentication using JWT
+- Call logging and voicemail recording
+- Modular NestJS architecture (Auth, Call, IVR, Common)
+- MongoDB schemas for users, calls, and voicemails
+- DTO validation for request data
+- Response handler for consistent API output
+
+---
+
+## Tech Stack
+
+- **NestJS**
+- **TypeScript**
+- **Twilio**
+- **MongoDB / Mongoose**
+- **JWT Authentication**
+
+---
+
+## Project Structure
+
+```
+src/
+│
+├── auth/
+│   ├── dto/
+│   │   ├── login.dto.ts
+│   │   └── signup.dto.ts
+│   ├── interfaces/
+│   │   ├── jwt-payload.interface.ts
+│   │   └── user.interface.ts
+│   ├── schemas/
+│   │   └── user.schema.ts
+│   ├── auth.controller.ts
+│   ├── auth.module.ts
+│   ├── auth.service.ts
+│   └── jwt.strategy.ts
+│
+├── call/
+│   ├── dto/
+│   │   ├── create-call.dto.ts
+│   │   └── create-voicemail.dto.ts
+│   ├── interfaces/
+│   │   ├── call.interface.ts
+│   │   └── voicemail.interface.ts
+│   ├── schemas/
+│   │   ├── call.schema.ts
+│   │   └── voicemail.schema.ts
+│   ├── call.controller.ts
+│   ├── call.module.ts
+│   └── call.service.ts
+│
+├── ivr/
+│   ├── ivr.controller.ts
+│   ├── ivr.module.ts
+│   └── ivr.service.ts
+│
+├── common/
+│   └── response-handler.ts
+│
+├── app.module.ts
+└── main.ts
+```
+
+---
 
 ## Installation
 
 ```bash
-$ npm install
+npm install
 ```
 
-## Running the app
+---
+
+## Environment Variables
+
+Create a `.env` file in the project root:
+
+```
+MONGODB_URI=mongodb://localhost:27017/ivr
+JWT_SECRET=your_jwt_secret
+TWILIO_ACCOUNT_SID=your_account_sid
+TWILIO_AUTH_TOKEN=your_auth_token
+TWILIO_PHONE_NUMBER=+1xxxxxxxxxx
+BASE_URL=https://your-server.com
+```
+
+---
+
+## Running the Project
+
+### Development
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm run start:dev
 ```
 
-## Test
+### Production
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm run build
+npm run start:prod
 ```
 
-## Support
+---
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Twilio Webhook Setup
 
-## Stay in touch
+Set the following Twilio webhook URLs:
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+| Twilio Event       | URL                                      |
+|--------------------|-------------------------------------------|
+| Incoming Call      | `POST {BASE_URL}/ivr/handle`              |
+| Voicemail Callback | `POST {BASE_URL}/call/voicemail`          |
+
+Ensure these URLs are publicly accessible (use **ngrok** for local development).
+
+---
+
+## API Endpoints
+
+### Authentication
+| Method | Endpoint       | Description          |
+|--------|----------------|----------------------|
+| POST   | `/auth/signup` | Create a new user    |
+| POST   | `/auth/login`  | Authenticate user    |
+
+### IVR
+| Method | Endpoint         | Description                    |
+|--------|------------------|--------------------------------|
+| POST   | `/ivr/handle`    | Entry point for IVR call flow  |
+
+### Call
+| Method | Endpoint             | Description                    |
+|--------|-----------------------|--------------------------------|
+| POST   | `/call/log`           | Log inbound call              |
+| POST   | `/call/voicemail`     | Handle voicemail callback     |
+
+---
+
+## Modules Overview
+
+### Auth Module
+- Handles user registration and login
+- Uses JWT for authentication
+- Stores users in MongoDB
+
+### IVR Module
+- Receives incoming calls
+- Generates TwiML responses for menu options
+- Routes calls to services based on user input
+
+### Call Module
+- Saves call information
+- Stores voicemail metadata
+- Integrates with Twilio callback events
+
+### Common Module
+- Shared response handler for consistent API structure
+
+---
+
+## Scripts
+
+```
+npm run start           # Start application
+npm run start:dev       # Start in watch mode
+npm run build           # Compile TypeScript
+npm run lint            # Run ESLint
+```
+
+---
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+This project is provided for development and educational purposes.  
+You may modify or extend it as needed.
+
